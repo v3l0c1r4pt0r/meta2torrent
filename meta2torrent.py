@@ -6,6 +6,7 @@ import sys
 def meta2binary(obj, announce):
   move2infotree(obj)
   add_announces(obj, announce.encode())
+  extract_title(obj)
 
 def move2infotree(obj):
   if b'info' not in obj:
@@ -26,6 +27,9 @@ def add_announces(obj, announce):
   obj[b'announce-list'] = []
   obj[b'announce-list'].append([])
   obj[b'announce-list'][0].append(announce)
+
+def extract_title(obj):
+  obj[b'title'] = obj[b'info'][b'name']
 
 def main():
   if len(sys.argv) < 4:
