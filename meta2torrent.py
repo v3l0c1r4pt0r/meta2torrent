@@ -1,12 +1,14 @@
 #!/usr/bin/env python3
 # Convert rtorrent's meta file to valid torrent file
 import fastbencode
+import datetime
 import sys
 
 def meta2binary(obj, announce):
   move2infotree(obj)
   add_announces(obj, announce.encode())
   extract_title(obj)
+  add_metadata(obj)
 
 def move2infotree(obj):
   if b'info' not in obj:
@@ -30,6 +32,15 @@ def add_announces(obj, announce):
 
 def extract_title(obj):
   obj[b'title'] = obj[b'info'][b'name']
+
+def add_metadata(obj):
+  obj[b'comment'] = b'Converted by meta2torrent.py from rtorrent meta file'
+  obj[b'created by'] = b'meta2torrent.py'
+  obj[b'locale'] = b'en'
+
+  now = datetime.datetime.now()
+  sec_from_epoch = now.strftime('%s')
+  obj[b'creation date'] = int(sec_from_epoch)
 
 def main():
   if len(sys.argv) < 4:
