@@ -64,7 +64,8 @@ def main():
       description='Convert rtorrent\' meta file into valid torrent')
   parser.add_argument('meta', help='meta file to convert')
   parser.add_argument('torrent', help='torrent file to create')
-  parser.add_argument('--announce', help='add to announce list', default=[], action='append')
+  parser.add_argument('--announce', help='add to announce list', default=[],
+      action='append')
 
   args = parser.parse_args()
 
