@@ -16,12 +16,18 @@ def move2infotree(obj):
   if b'info' not in obj:
     obj[b'info'] = {}
 
-  obj[b'info'][b'files'] = obj[b'files']
+  if b'files' in obj:
+    obj[b'info'][b'files'] = obj[b'files']
+    del obj[b'files']
+  elif b'length' in obj:
+    obj[b'info'][b'length'] = obj[b'length']
+    del obj[b'length']
+  else:
+    raise Exception('Neither files nor length found in meta file. Unsupported.')
   obj[b'info'][b'name'] = obj[b'name']
   obj[b'info'][b'piece length'] = obj[b'piece length']
   obj[b'info'][b'pieces'] = obj[b'pieces']
 
-  del obj[b'files']
   del obj[b'name']
   del obj[b'piece length']
   del obj[b'pieces']
