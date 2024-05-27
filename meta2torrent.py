@@ -13,21 +13,28 @@ def meta2binary(obj, announces):
   add_metadata(obj)
 
 def move2infotree(obj):
+  # create info node
   if b'info' not in obj:
     obj[b'info'] = {}
 
+  # there are 2 variants of torrent file
   if b'files' in obj:
+    # one has files node containing file list
     obj[b'info'][b'files'] = obj[b'files']
     del obj[b'files']
   elif b'length' in obj:
+    # the other has length defining size of the only file inside
     obj[b'info'][b'length'] = obj[b'length']
     del obj[b'length']
   else:
     raise Exception('Neither files nor length found in meta file. Unsupported.')
+
+  # copy other nodes to info
   obj[b'info'][b'name'] = obj[b'name']
   obj[b'info'][b'piece length'] = obj[b'piece length']
   obj[b'info'][b'pieces'] = obj[b'pieces']
 
+  # and delete from root node
   del obj[b'name']
   del obj[b'piece length']
   del obj[b'pieces']
